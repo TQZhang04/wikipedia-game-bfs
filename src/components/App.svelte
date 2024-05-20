@@ -157,74 +157,78 @@
   });
 
   function bfs(startId, endId) {
-    const queue = [startId];
+    const queue = [{ id: startId, depth: 0 }];
     const visited = new Set();
     const parent = {};
-    const order = []; // To store the order of exploration
+    const depthOrder = []; // To store nodes by depth level
     visited.add(startId);
 
     while (queue.length > 0) {
-      const current = queue.shift();
-      order.push(current);
-      if (current === endId) {
+      const { id, depth } = queue.shift();
+      if (!depthOrder[depth]) depthOrder[depth] = [];
+      depthOrder[depth].push(id);
+
+      if (id === endId) {
         const path = [];
         let step = endId;
         while (step) {
           path.unshift(step);
           step = parent[step];
         }
-        return { path, order };
+        return { path, depthOrder };
       }
-      const neighbors = links.filter(link => link.source.id === current)
+      const neighbors = links.filter(link => link.source.id === id)
                              .map(link => link.target.id);
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
           visited.add(neighbor);
-          parent[neighbor] = current;
-          queue.push(neighbor);
+          parent[neighbor] = id;
+          queue.push({ id: neighbor, depth: depth + 1 });
         }
       }
     }
-    return { path: null, order };
+    return { path: null, depthOrder };
   }
 
-  async function animateBfs(order, path) {
+  async function animateBfs(depthOrder, path) {
     const nodesSelection = d3.selectAll('.node');
     const linksSelection = d3.selectAll('.link');
 
-    for (let i = 0; i < order.length; i++) {
-      iterationTime.set(i + 1);
-      // Highlight the current node in the order of BFS
-      nodesSelection.filter(d => d.id === order[i])
-                    .transition()
-                    .duration(animationDelay / 2)
-                    .attr('fill', 'orange');
+    for (let depth = 0; depth < depthOrder.length; depth++) {
+      iterationTime.set(depth + 1);
+
+      // Highlight all nodes at the current depth level
+      depthOrder[depth].forEach(id => {
+        nodesSelection.filter(d => d.id === id)
+                      .transition()
+                      .duration(animationDelay / 2)
+                      .attr('fill', 'orange');
+      });
 
       await new Promise(resolve => setTimeout(resolve, animationDelay));
 
-      // If the current node is part of the path, keep it highlighted
-      if (path.includes(order[i])) {
-        nodesSelection.filter(d => d.id === order[i])
-                      .transition()
-                      .duration(animationDelay / 2)
-                      .attr('fill', 'green');
-      } else {
-        // Otherwise, reset its color
-        nodesSelection.filter(d => d.id === order[i])
-                      .transition()
-                      .duration(animationDelay / 2)
-                      .attr('fill', '#69b3a2');
-      }
+      // Reset color or highlight if in path
+      depthOrder[depth].forEach(id => {
+       
+          nodesSelection.filter(d => d.id === id)
+                        .transition()
+                        .duration(animationDelay / 2)
+                        .attr('fill', 'green');
+       
+      
+      });
     }
 
     // Highlight the path from start to end
     for (let i = 1; i < path.length; i++) {
-      iterationTime.set(order.length + i);
+      iterationTime.set(depthOrder.length + i);
       linksSelection.filter(d => d.source.id === path[i - 1] && d.target.id === path[i])
                     .transition()
                     .duration(animationDelay / 2)
                     .attr('stroke', 'green')
-                    .attr('stroke-width', 4);
+                    .attr('stroke-width', 3);
+
+                    
 
       await new Promise(resolve => setTimeout(resolve, animationDelay));
     }
@@ -247,10 +251,10 @@
     event.preventDefault();
     const startId = parseInt(startNodeId);
     const endId = parseInt(endNodeId);
-    const { path, order } = bfs(startId, endId);
+    const { path, depthOrder } = bfs(startId, endId);
     bfsPath.set(path || []);
     if (path) {
-      animateBfs(order, path);
+      animateBfs(depthOrder, path);
     }
   }
 </script>
@@ -320,31 +324,7 @@
     display: block;
   }
 
-  .node {
-    fill: #69b3a2;
-    stroke: #555;
-    stroke-width: 1.5px;
-  }
-
-  .link {
-    stroke: #999;
-    stroke-opacity: 0.6;
-  }
-
-  .tooltip {
-    position: absolute;
-    text-align: center;
-    width: 60px;
-    height: 28px;
-    padding: 2px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
-  }
-
-  .link-table{ 
+  .link-table {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -353,7 +333,6 @@
     padding: 10px;
     border-radius: 3px;
     margin-top: 20px;
-  
   }
   
   .path-table {
@@ -376,13 +355,6 @@
     border: 1px solid #ccc;
     padding: 5px;
     text-align: left;
-  }
-
-  /* not working */
-  .glow {
-    stroke: yellow !important;
-    stroke-width: 3px;
-    filter: drop-shadow(0 0 10px yellow);
   }
 
   .bfs-form {
@@ -425,6 +397,5 @@
     background: white;
     border: 1px solid #ccc;
     padding: 10px;
-    border-radius: 2px;
   }
 </style>
