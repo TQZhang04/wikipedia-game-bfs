@@ -41,8 +41,8 @@
       .attr('refX', 13)
       .attr('refY', 0)
       .attr('orient', 'auto')
-      .attr('markerWidth', 13)
-      .attr('markerHeight', 13)
+      .attr('markerWidth', 7)
+      .attr('markerHeight', 10)
       .attr('xoverflow', 'visible')
       .append('svg:path')
       .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
@@ -344,7 +344,19 @@
     pointer-events: none;
   }
 
-  .link-table, .path-table {
+  .link-table{ 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 3px;
+    margin-top: 20px;
+  
+  }
+  
+  .path-table {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -366,6 +378,7 @@
     text-align: left;
   }
 
+  /* not working */
   .glow {
     stroke: yellow !important;
     stroke-width: 3px;
@@ -407,11 +420,11 @@
 
   .iteration-time {
     position: absolute;
-    top: 10px;
+    bottom: 70px;
     right: 10px;
     background: white;
     border: 1px solid #ccc;
     padding: 10px;
-    border-radius: 3px;
+    border-radius: 2px;
   }
 </style>
