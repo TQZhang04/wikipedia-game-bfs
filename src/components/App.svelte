@@ -1,8 +1,10 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
+  import { writable } from 'svelte/store';
 
   let svg;
+  const selectedNodeLinks = writable([]);
 
   onMount(() => {
     const width = window.innerWidth;
@@ -71,7 +73,21 @@
         .call(d3.drag()
           .on('start', dragstarted)
           .on('drag', dragged)
-          .on('end', dragended));
+          .on('end', dragended))
+        .on('mouseover', mouseover)  // Add mouseover event
+        .on('mouseout', mouseout)    // Add mouseout event
+        .on('click', click);         // Add click event
+
+    // Create a tooltip div that is hidden by default
+    const tooltip = d3.select('body').append('div')
+      .attr('class', 'tooltip')
+      .style('position', 'absolute')
+      .style('background', '#f9f9f9')
+      .style('padding', '5px')
+      .style('border', '1px solid #d3d3d3')
+      .style('border-radius', '3px')
+      .style('pointer-events', 'none')
+      .style('opacity', 0);
 
     node.append('title')
       .text(d => d.id);
@@ -111,10 +127,48 @@
       d.fx = null;
       d.fy = null;
     }
+
+    function mouseover(event, d) {
+      tooltip.transition()
+        .duration(200)
+        .style('opacity', .9);
+      tooltip.html(`Node ID: ${d.id}`)
+        .style('left', (event.pageX + 5) + 'px')
+        .style('top', (event.pageY - 28) + 'px');
+    }
+
+    function mouseout(event, d) {
+      tooltip.transition()
+        .duration(500)
+        .style('opacity', 0);
+    }
+
+    function click(event, d) {
+      const nodeLinks = links.filter(link => link.source.id === d.id || link.target.id === d.id);
+      selectedNodeLinks.set(nodeLinks);
+    }
   });
 </script>
 
 <svg bind:this={svg}></svg>
+
+{#if $selectedNodeLinks.length > 0}
+  <div class="link-table">
+    <h3>Node Links</h3>
+    <table>
+      <tr>
+        <th>Source</th>
+        <th>Target</th>
+      </tr>
+      {#each $selectedNodeLinks as link}
+        <tr>
+          <td>{link.source.id}</td>
+          <td>{link.target.id}</td>
+        </tr>
+      {/each}
+    </table>
+  </div>
+{/if}
 
 <style>
   svg {
@@ -132,5 +186,39 @@
   .link {
     stroke: #999;
     stroke-opacity: 0.6;
+  }
+
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .link-table {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 3px;
+  }
+
+  .link-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .link-table th, .link-table td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
   }
 </style>
