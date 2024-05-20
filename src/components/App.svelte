@@ -27,6 +27,21 @@
       .attr('width', width)
       .attr('height', height);
 
+    // Define arrow markers for the links
+    svgElement.append('defs').append('marker')
+      .attr('id', 'arrowhead')
+      .attr('viewBox', '-0 -5 10 10')
+      .attr('refX', 13)
+      .attr('refY', 0)
+      .attr('orient', 'auto')
+      .attr('markerWidth', 7)
+      .attr('markerHeight', 10)
+      .attr('xoverflow', 'visible')
+      .append('svg:path')
+      .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+      .attr('fill', '#999')
+      .style('stroke', 'none');
+
     const simulation = d3.forceSimulation(nodes)
       .force('link', d3.forceLink(links).id(d => d.id).distance(100))
       .force('charge', d3.forceManyBody().strength(-300))
@@ -40,7 +55,8 @@
         .attr('class', 'link')
         .attr('stroke', '#999')
         .attr('stroke-opacity', 0.6)
-        .attr('stroke-width', 2);
+        .attr('stroke-width', 2)
+        .attr('marker-end', 'url(#arrowhead)');  // Add marker-end to use the arrowhead marker
 
     const node = svgElement.append('g')
         .attr('class', 'nodes')
@@ -101,6 +117,12 @@
 <svg bind:this={svg}></svg>
 
 <style>
+  svg {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+  }
+
   .node {
     fill: #69b3a2;
     stroke: #555;
