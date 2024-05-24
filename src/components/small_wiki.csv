@@ -1,0 +1,16 @@
+page_id_from,page_title_from,page_id_to,page_title_to
+5323,Computer science,35458904,Data science
+9845,JavaScript,15881,Java (programming language)
+9845,JavaScript,23862,Python (programming language)
+9845,JavaScript,29004,SQL
+15881,Java (programming language),9845,JavaScript
+15881,Java (programming language),23862,Python (programming language)
+23862,Python (programming language),15881,Java (programming language)
+23862,Python (programming language),9845,JavaScript
+26685,Statistics,35458904,Data science
+29004,SQL,15881,Java (programming language)
+29004,SQL,9845,JavaScript
+29004,SQL,23862,Python (programming language)
+35458904,Data science,5323,Computer science
+35458904,Data science,26685,Statistics
+36177168,D3.js,9845,JavaScript
