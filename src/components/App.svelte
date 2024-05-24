@@ -9,6 +9,7 @@
   const iterationTime = writable(0);
   const pathFound = writable(false);
   const foundNodeCoordinates = writable({ x: 0, y: 0 });
+  const noPathFound = writable(false); // Store to handle no path found
   let startNodeId = '';
   let endNodeId = '';
   let animationDelay = 500; // Default delay for animation in milliseconds
@@ -16,6 +17,8 @@
   const nodes = writable([]);
   const links = writable([]);
   const selectedNode = writable(null); // Store to hold the selected node
+  const startNodePosition = writable({ x: 0, y: 0 }); // Store to hold the start node position
+  const endNodePosition = writable({ x: 0, y: 0 }); // Store to hold the end node position
 
   async function loadGraphData() {
     const data = await d3.csv('src/components/small_wiki.csv'); 
@@ -239,9 +242,8 @@
     pathFound.set(true);
 
     // Hide the message after the animation delay
-    setTimeout(() => {
-      pathFound.set(false);
-    }, animationDelay * 2);
+    await new Promise(resolve => setTimeout(resolve, animationDelay));
+    pathFound.set(false);
 
     // Highlight visited
     for (let i = 1; i < path.length; i++) {
@@ -276,6 +278,7 @@
 
   function handleBfsSubmit(event) {
     event.preventDefault();
+    noPathFound.set(false); // Reset no path found message
     const startId = startNodeId.trim();
     const endId = endNodeId.trim();
     const { path, depthOrder } = bfs(startId, endId);
@@ -283,6 +286,21 @@
     pathFound.set(false);
     if (path) {
       animateBfs(depthOrder, path);
+    } else {
+      noPathFound.set(true); // Set no path found message
+    }
+  }
+
+  $: if (startNodeId) {
+    const node = get(nodes).find(n => n.id === startNodeId);
+    if (node) {
+      startNodePosition.set({ x: node.x, y: node.y });
+    }
+  }
+  $: if (endNodeId) {
+    const node = get(nodes).find(n => n.id === endNodeId);
+    if (node) {
+      endNodePosition.set({ x: node.x, y: node.y });
     }
   }
 </script>
@@ -325,6 +343,11 @@
     </select>
     <button type="submit">Find BFS Path</button>
   </form>
+
+  <!-- No path found message -->
+  {#if $noPathFound}
+    <p style="color: red;">No path found between the selected nodes.</p>
+  {/if}
 </div>
 
 <div class="speed-control">
@@ -360,6 +383,18 @@
     <h3>Path Found!</h3>
   </div>
 {/if}
+
+<!-- {#if startNodeId}
+  <div class="tooltip" style="top: {$startNodePosition.y}px; left: {$startNodePosition.x}px; opacity: 1;">
+    {startNodeId}
+  </div>
+{/if}
+
+{#if endNodeId}
+  <div class="tooltip" style="top: {$endNodePosition.y}px; left: {$endNodePosition.x}px; opacity: 1;">
+    {endNodeId}
+  </div>
+{/if} -->
 
 <style>
   svg {
@@ -454,13 +489,12 @@
   .tooltip {
     position: absolute;
     text-align: center;
-    width: 60px;
-    height: 28px;
-    padding: 2px;
+    width: 160px;
+    padding: 5px;
     font: 12px sans-serif;
     background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
     pointer-events: none;
   }
 </style>
