@@ -17,20 +17,26 @@
   let simulation;
 
   function runDijkstra(startNode) {
+    console.log("start", startNode);
+
     let distances = new Map(nodes.map((node) => [node.id, Infinity]));
     distances.set(startNode, 0);
+    console.log("dist", distances);
 
     let visited = new Set();
-    let priorityQueue = new Set([startNode]);
+    let priorityQueue = new Set(nodes);
 
     let steps = [];
-
     while (priorityQueue.size > 0) {
+      console.log("PQ", priorityQueue);
+      console.log("Steps", steps);
+
       let currentNode = [...priorityQueue].reduce((a, b) =>
-        distances.get(a) < distances.get(b) ? a : b
+        distances.get(a.id) < distances.get(b.id) ? a : b
       );
       priorityQueue.delete(currentNode);
       visited.add(currentNode);
+      console.log("curr", currentNode);
 
       steps.push({
         node: currentNode,
@@ -38,20 +44,57 @@
         visited: new Set(visited),
       });
 
-      edges
-        .filter(
-          (edge) => edge.source === currentNode && !visited.has(edge.target)
-        )
-        .forEach((edge) => {
-          let alt = distances.get(currentNode) + edge.weight;
-          if (alt < distances.get(edge.target)) {
-            distances.set(edge.target, alt);
-            priorityQueue.add(edge.target);
-          }
-        });
-      console.log(priorityQueue);
-    }
+      // edges
+      //   .filter(
+      //     (edge) => edge.source === currentNode && !visited.has(edge.target)
+      //   )
+      //   .forEach((edge) => {
+      //     let alt = distances.get(currentNode) + edge.weight;
+      //     console.log("alt", alt);
+      //     if (alt < distances.get(edge.target)) {
+      //       console.log("updated")
+      //       distances.set(edge.target, alt);
+      //       // priorityQueue.add(edge.target);
+      //     }
+      //   });
 
+      for (let edge of edges) {
+        if (edge.source === currentNode) {
+          console.log(distances.get(currentNode.id));
+          console.log(edge.weight);
+          let alt = distances.get(currentNode.id) + edge.weight;
+          console.log("alt", alt);
+          if (alt < distances.get(edge.target.id)) {
+            console.log("updated");
+            distances.set(edge.target.id, alt);
+            // priorityQueue.add(edge.target);
+          }
+        } else if (edge.target === currentNode) {
+          console.log(distances.get(currentNode.id));
+          console.log(edge.weight);
+          let alt = distances.get(currentNode.id) + edge.weight;
+          console.log("alt", alt);
+          if (alt < distances.get(edge.source.id)) {
+            console.log("updated");
+            distances.set(edge.source.id, alt);
+            // priorityQueue.add(edge.target);
+          }
+        }
+      }
+
+      // edges
+      //   .filter(
+      //     (edge) => edge.target === currentNode && !visited.has(edge.source)
+      //   )
+      //   .forEach((edge) => {
+      //     let alt = distances.get(currentNode) + edge.weight;
+      //     if (alt < distances.get(edge.source)) {
+      //       distances.set(edge.source, alt);
+      //       priorityQueue.add(edge.source);
+      //     }
+      //   });
+    }
+    console.log(steps);
     animateSteps(steps);
   }
 
