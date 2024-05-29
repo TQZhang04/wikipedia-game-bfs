@@ -19,7 +19,7 @@
     <slot />
     <hr />
     <!-- svelte-ignore a11y-autofocus -->
-    <button autofocus on:click={() => dialog.close()}>close modal</button>
+    <button autofocus on:click={() => dialog.close()}>Let's begin</button>
   </div>
 </dialog>
 
@@ -60,5 +60,13 @@
   }
   button {
     display: block;
+    border: none;
+    color: grey;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
   }
 </style>

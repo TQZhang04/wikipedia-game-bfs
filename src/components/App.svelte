@@ -350,32 +350,27 @@
   });
 </script>
 
-<button on:click={() => (showModal = true)}> show modal </button>
+<button on:click={() => (showModal = true)}> Directions </button>
 
 <Modal bind:showModal>
   <h2 slot="header">
-    modal
-    <small><em>adjective</em> mod·al \ˈmō-dəl\</small>
+    Welcome to the Wikipedia Web
   </h2>
+  <em>If you have knowledge, let others light their candle in it.</em><br>
+  <em>-Margaret Fuller</em>
+  <br><br>
+  All knowledge builds off of decades of other knowledge. [insert example here]. 
+  <br><br>
+  In this interactive web app, you can explore the vast amount of knowledge 
+  contained within Wikipedia, building a web of knowledge connected by hyperlinks.
+  Explore your favorite topics and see how all knowledge is connected.
+  <br><br>
+  <em>
+    Click a node to see the articles linked to it on the right. Selecting an article
+    from the list will add that node to the web. Use the pathfinding function on the bottom
+    left to see how each topic connects to each other.
+  </em>
 
-  <ol class="definition-list">
-    <li>of or relating to modality in logic</li>
-    <li>
-      containing provisions as to the mode of procedure or the manner of taking
-      effect —used of a contract or legacy
-    </li>
-    <li>of or relating to a musical mode</li>
-    <li>of or relating to structure as opposed to substance</li>
-    <li>
-      of, relating to, or constituting a grammatical form or category
-      characteristically indicating predication
-    </li>
-    <li>of or relating to a statistical mode</li>
-  </ol>
-
-  <a href="https://www.merriam-webster.com/dictionary/modal"
-    >merriam-webster.com</a
-  >
 </Modal>
 
 <svg bind:this={svg}></svg>
