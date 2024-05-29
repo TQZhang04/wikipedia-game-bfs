@@ -20,7 +20,7 @@
   const bfsPath = writable([]);
 
   async function loadGraphData() {
-    const data = await d3.csv('${base}/wiki.csv');
+    const data = await d3.csv(`${base}/wiki.csv`);
 
     console.log(data);
     const parsedNodes = new Set();
