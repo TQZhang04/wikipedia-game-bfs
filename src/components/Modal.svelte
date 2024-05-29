@@ -58,15 +58,23 @@
       opacity: 1;
     }
   }
+
   button {
     display: block;
     border: none;
-    color: grey;
+    color: #02330f;
     padding: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     border-radius: 5px;
+    transition-duration: 300ms;
+  }
+
+  button:hover {
+    background-color: #498a5a;
+    color: white;
+    cursor: pointer;
   }
 </style>

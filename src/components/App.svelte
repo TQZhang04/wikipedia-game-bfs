@@ -22,6 +22,11 @@
 
   let showModal = true;
 
+  // colors
+  let nodeColor = "#498a5a";
+  let highlightColor = "orange";
+  let edgeColor = "#999"
+
   async function loadGraphData() {
     const url =
       "https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/wiki.csv";
@@ -86,7 +91,7 @@
       .attr("xoverflow", "visible")
       .append("svg:path")
       .attr("d", "M 0,-5 L 10 ,0 L 0,5")
-      .attr("fill", "#999")
+      .attr("fill", edgeColor)
       .style("stroke", "none");
 
     const allNodes = get(nodes);
@@ -121,7 +126,7 @@
         $shortestPath.includes(d.source.id) &&
         $shortestPath.includes(d.target.id)
           ? "red"
-          : "#999"
+          : edgeColor
       )
       .attr("stroke-opacity", 0.6)
       .attr("stroke-width", 2)
@@ -136,7 +141,7 @@
       .append("circle")
       .attr("class", "node")
       .attr("r", 10)
-      .attr("fill", (d) => ($shortestPath.includes(d.id) ? "red" : "#69b3a2"))
+      .attr("fill", (d) => ($shortestPath.includes(d.id) ? "red" : nodeColor))
       .attr("stroke", "#555")
       .attr("stroke-width", 1.5)
       .call(
@@ -270,31 +275,13 @@
     const nodesSelection = d3.selectAll(".node");
     const linksSelection = d3.selectAll(".link");
 
-    // for (let depth = 0; depth < depthOrder.length; depth++) {
-    //   depthOrder[depth].forEach(id => {
-    //     nodesSelection.filter(d => d.id === id)
-    //       .transition()
-    //       .duration(animationDelay / 2)
-    //       .attr('fill', 'orange');
-    //   });
-
-    //   await new Promise(resolve => setTimeout(resolve, animationDelay));
-
-    //   depthOrder[depth].forEach(id => {
-    //     nodesSelection.filter(d => d.id === id)
-    //       .transition()
-    //       .duration(animationDelay / 2)
-    //       .attr('fill', 'green');
-    //   });
-    // }
-
     for (let i = 0; i < path.length; i++) {
       const nodeId = path[i];
       nodesSelection
         .filter((d) => d.id === nodeId)
         .transition()
         .duration(animationDelay / 2)
-        .attr("fill", "orange");
+        .attr("fill", highlightColor);
 
       if (i > 0) {
         const sourceId = path[i - 1];
@@ -302,7 +289,7 @@
           .filter((d) => d.source.id === sourceId && d.target.id === nodeId)
           .transition()
           .duration(animationDelay / 2)
-          .attr("stroke", "orange")
+          .attr("stroke", highlightColor)
           .attr("stroke-width", 3);
       }
 
@@ -321,11 +308,11 @@
     nodesSelection
       .transition()
       .duration(animationDelay / 2)
-      .attr("fill", "#69b3a2");
+      .attr("fill", nodeColor);
     linksSelection
       .transition()
       .duration(animationDelay / 2)
-      .attr("stroke", "#999")
+      .attr("stroke", edgeColor)
       .attr("stroke-width", 2);
   }
 
@@ -350,27 +337,27 @@
   });
 </script>
 
-<button on:click={() => (showModal = true)}> Directions </button>
+<button class="menu-button" on:click={() => (showModal = true)}>
+  Show Directions
+</button>
 
 <Modal bind:showModal>
-  <h2 slot="header">
-    Welcome to the Wikipedia Web
-  </h2>
-  <em>If you have knowledge, let others light their candle in it.</em><br>
+  <h2 slot="header">Welcome to the Wikipedia Web</h2>
+  <em>If you have knowledge, let others light their candle in it.</em><br />
   <em>-Margaret Fuller</em>
-  <br><br>
-  All knowledge builds off of decades of other knowledge. [insert example here]. 
-  <br><br>
-  In this interactive web app, you can explore the vast amount of knowledge 
-  contained within Wikipedia, building a web of knowledge connected by hyperlinks.
-  Explore your favorite topics and see how all knowledge is connected.
-  <br><br>
+  <br /><br />
+  All knowledge builds off of decades of other knowledge. [insert example here].
+  <br /><br />
+  In this interactive web app, you can explore the vast amount of knowledge contained
+  within Wikipedia, building a web of knowledge connected by hyperlinks. Explore
+  your favorite topics and see how all knowledge is connected.
+  <br /><br />
   <em>
-    Click a node to see the articles linked to it on the right. Selecting an article
-    from the list will add that node to the web. Use the pathfinding function on the bottom
-    left to see how each topic connects to each other.
+    Click a node to see the articles linked to it on the right. Selecting an
+    article from the list will add that node to the web. Use the pathfinding
+    function on the bottom left to see how each topic connects to each other.
+    The slider on the bottom right controls the speed of the pathfinding animation.
   </em>
-
 </Modal>
 
 <svg bind:this={svg}></svg>
@@ -399,7 +386,7 @@
     <table>
       <tr>
         <th>Step</th>
-        <th>wikipedia</th>
+        <th>Article</th>
       </tr>
       {#each $bfsPath as node, index}
         <tr>
@@ -433,7 +420,7 @@
         <option value={node}>{node}</option>
       {/each}
     </select>
-    <button type="submit">Find Shortest Path</button>
+    <button type="submit" class="menu-button">Find Shortest Path</button>
   </form>
 
   {#if $noPathFound}
@@ -522,7 +509,7 @@
 
   .path-table {
     position: absolute;
-    top: 10px;
+    top: 30px;
     left: 10px;
     background: white;
     border: 1px solid #ccc;
@@ -534,5 +521,23 @@
   .path-table table {
     width: 100%;
     border-collapse: collapse;
+  }
+
+  .menu-button {
+    border: none;
+    padding: 10px 10px;
+    text-align: center;
+    color: #02330f;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    transition-duration: 300ms;
+  }
+
+  .menu-button:hover {
+    background-color: #498a5a;
+    color: white;
+    cursor: pointer;
   }
 </style>
