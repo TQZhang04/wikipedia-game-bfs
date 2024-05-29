@@ -20,29 +20,43 @@
   const bfsPath = writable([]);
 
   async function loadGraphData() {
-    const data = await d3.csv(`${base}/wiki.csv`);
+    const url = "https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/branch/static/wiki.csv";
+    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        const csvText = await response.text();
+        const data = d3.csvParse(csvText);
 
-    console.log(data);
-    const parsedNodes = new Set();
-    const parsedLinks = [];
+        const parsedNodes = new Set();
+        const parsedLinks = [];
 
-    data.forEach(row => {
-      const { page_title_from, page_title_to } = row;
-      if (display.includes(page_title_from)) {
-        parsedNodes.add(page_title_from);
-        parsedNodes.add(page_title_to);
-        parsedLinks.push({ source: page_title_from, target: page_title_to });
-      }
-    });
+        data.forEach(row => {
+            const { page_title_from, page_title_to } = row;
+            if (display.includes(page_title_from)) {
+                parsedNodes.add(page_title_from);
+                parsedNodes.add(page_title_to);
+                parsedLinks.push({ source: page_title_from, target: page_title_to });
+            }
+        });
 
-    const filteredNodes = Array.from(parsedNodes).map(id => ({ id }));
-    const filteredLinks = parsedLinks.filter(link =>
-      parsedNodes.has(link.source) && parsedNodes.has(link.target)
-    );
+        const filteredNodes = Array.from(parsedNodes).map(id => ({ id }));
+        const filteredLinks = parsedLinks.filter(link =>
+            parsedNodes.has(link.source) && parsedNodes.has(link.target)
+        );
 
-    nodes.set(filteredNodes);
-    links.set(filteredLinks);
+        nodes.set(filteredNodes);
+        links.set(filteredLinks);
+    } catch (error) {
+        console.error('Failed to fetch wiki data:', error);
+    }
   }
+
+  onMount(() => {
+    loadGraphData();
+  });
 
   function updateGraph() {
     const width = window.innerWidth;
