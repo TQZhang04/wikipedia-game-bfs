@@ -20,7 +20,7 @@
   const bfsPath = writable([]);
 
   async function loadGraphData() {
-    const url = "https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/branch/static/wiki.csv";
+    const url = "https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/wiki.csv";
     
     try {
         const response = await fetch(url);
