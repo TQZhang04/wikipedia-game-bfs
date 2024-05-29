@@ -22,7 +22,7 @@
   async function loadGraphData() {
     const data = await d3.csv('${base}/wiki.csv');
 
-    consol.log(data);
+    console.log(data);
     const parsedNodes = new Set();
     const parsedLinks = [];
 
