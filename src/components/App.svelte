@@ -20,7 +20,7 @@
   const bfsPath = writable([]);
 
   async function loadGraphData() {
-    const data = await d3.csv('wikipedia-game-bfs/src/components/wiki.csv');
+    const data = await d3.csv('./wiki.csv');
     const parsedNodes = new Set();
     const parsedLinks = [];
 
