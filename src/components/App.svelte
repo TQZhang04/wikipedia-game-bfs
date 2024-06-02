@@ -26,7 +26,7 @@
   // colors
   let nodeColor = "#498a5a";
   let highlightColor = "orange";
-  let edgeColor = "#999"
+  let edgeColor = "#999";
 
   async function loadGraphData() {
     const url =
@@ -154,7 +154,8 @@
       )
       .on("mouseover", mouseover)
       .on("mouseout", mouseout)
-      .on("click", click);
+      .on("click", click)
+      .style("cursor", "pointer");
 
     const tooltip = d3
       .select("body")
@@ -298,10 +299,14 @@
           .attr("stroke-width", 3);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 2000 - animationDelay));
+      await new Promise((resolve) =>
+        setTimeout(resolve, 2000 - animationDelay)
+      );
     }
 
-    await new Promise((resolve) => setTimeout(resolve, (2000 - animationDelay) * 2));
+    await new Promise((resolve) =>
+      setTimeout(resolve, (2000 - animationDelay) * 2)
+    );
     resetGraph();
     iterationTime.set(0);
   }
@@ -351,12 +356,12 @@
   <em>If you have knowledge, let others light their candle in it.</em><br />
   <em>-Margaret Fuller</em>
   <br /><br />
-  All knowledge builds off of millenia of other knowledge. The golden ratio, 
-  originally a mathematical concept discovered in 230 BC, has been used even 
-  today in art, architecture, and design to create harmonious compositions. 
-  Star charts from the ancient Egyptians and Babylonians formed the beginnings 
-  of our knowledge of the stars, knowledge that today has taken us to faraway 
-  galaxies. What if we could see how it's all connected?
+  All knowledge builds off of millenia of other knowledge. The golden ratio, originally
+  a mathematical concept discovered in 230 BC, has been used even today in art, architecture,
+  and design to create harmonious compositions. Star charts from the ancient Egyptians
+  and Babylonians formed the beginnings of our knowledge of the stars, knowledge
+  that today has taken us to faraway galaxies. What if we could see how it's all
+  connected?
   <br /><br />
   In this interactive web app, you can explore the vast amount of knowledge contained
   within Wikipedia, building a web of knowledge connected by hyperlinks. Explore
@@ -366,15 +371,34 @@
     Click a node to see the articles linked to it on the right. Selecting an
     article from the list will add that node to the web. Use the pathfinding
     function on the bottom left to see how each topic connects to each other.
-    The slider on the bottom right controls the speed of the pathfinding animation.
+    The slider on the bottom right controls the speed of the pathfinding
+    animation.
   </em>
 </Modal>
 
-<svg bind:this={svg}></svg>
+
+<svg bind:this={svg}>
+  <filter id="black-glow">
+    <feColorMatrix
+      type="matrix"
+      values="0 0 0 0   0
+                 0 0 0 0   0
+                 0 0 0 0   0
+                 0 0 0 0.7 0"
+    />
+    <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+    <feMerge>
+      <feMergeNode in="coloredBlur" />
+      <feMergeNode in="SourceGraphic" />
+    </feMerge>
+  </filter>
+</svg>
 
 {#if $showLinkTable && $selectedNodeLinks.length >= 0 && $selectedNode}
   <div class="link-table">
-    <button class="close-button" on:click={() => showLinkTable.set(false)}>x</button>
+    <button class="close-button" on:click={() => showLinkTable.set(false)}
+      >x</button
+    >
     <h3>
       <a
         href={`https://en.wikipedia.org/wiki/${$selectedNode.id}`}
@@ -433,16 +457,14 @@
     </select>
 
     <label for="speed">Speed:</label>
-      <input
-        type="range"
-        id="speed"
-        min="100"
-        max="1990"
-        step="10"
-        bind:value={animationDelay}
-      />
-    
-
+    <input
+      type="range"
+      id="speed"
+      min="100"
+      max="1990"
+      step="10"
+      bind:value={animationDelay}
+    />
 
     <button type="submit" class="menu-button">Find Shortest Path</button>
   </form>
@@ -450,7 +472,6 @@
   {#if $noPathFound}
     <p style="color: red;">No path found between the selected Wiki.</p>
   {/if}
-
 </div>
 
 <style>
@@ -460,76 +481,75 @@
     display: block;
   }
 
-.link-table {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #f9f9f9;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  border-radius: 5px;
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-}
+  .link-table {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+  }
 
-.link-table {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #f9f9f9;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  border-radius: 5px;
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-  max-height: 70vh; /* Adjust as needed */
-  overflow-y: auto;
-}
+  .link-table {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    max-height: 70vh; /* Adjust as needed */
+    overflow-y: auto;
+  }
 
-.close-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
 
-.link-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  .link-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-.link-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
+  .link-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
 
-.link-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
+  .link-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
 
-.link-table tr:hover {
-  background-color: #ddd;
-}
+  .link-table tr:hover {
+    background-color: #ddd;
+  }
 
-.link-table td {
-  cursor: pointer;
-}
+  .link-table td {
+    cursor: pointer;
+  }
 
-.link-table a {
-  color: #225324;
-  text-decoration: none;
-}
+  .link-table a {
+    color: #225324;
+    text-decoration: none;
+  }
 
-.link-table a:hover {
-  text-decoration: underline;
-}
-
+  .link-table a:hover {
+    text-decoration: underline;
+  }
 
   .bfs-form {
     position: absolute;
@@ -552,51 +572,52 @@
   }
 
   .path-table {
-  position: absolute;
-  top: 30px;
-  left: 10px;
-  background: #f9f9f9;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  border-radius: 5px;
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-}
+    position: absolute;
+    top: 30px;
+    left: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+  }
 
-.path-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  .path-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-.path-table th, .path-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
+  .path-table th,
+  .path-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
 
-.path-table th {
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
-}
+  .path-table th {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+  }
 
-.path-table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
+  .path-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
 
-.path-table tr:hover {
-  background-color: #ddd;
-}
+  .path-table tr:hover {
+    background-color: #ddd;
+  }
 
-.path-table a {
-  color: #4CAF50;
-  text-decoration: none;
-}
+  .path-table a {
+    color: #4caf50;
+    text-decoration: none;
+  }
 
-.path-table a:hover {
-  text-decoration: underline;
-}
+  .path-table a:hover {
+    text-decoration: underline;
+  }
 
   .menu-button {
     border: none;
