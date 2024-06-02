@@ -285,7 +285,7 @@
       nodesSelection
         .filter((d) => d.id === nodeId)
         .transition()
-        .duration(animationDelay / 2)
+        .duration((2000 - animationDelay) / 2)
         .attr("fill", highlightColor);
 
       if (i > 0) {
@@ -293,15 +293,15 @@
         linksSelection
           .filter((d) => d.source.id === sourceId && d.target.id === nodeId)
           .transition()
-          .duration(animationDelay / 2)
+          .duration((2000 - animationDelay) / 2)
           .attr("stroke", highlightColor)
           .attr("stroke-width", 3);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, animationDelay));
+      await new Promise((resolve) => setTimeout(resolve, 2000 - animationDelay));
     }
 
-    await new Promise((resolve) => setTimeout(resolve, animationDelay * 2));
+    await new Promise((resolve) => setTimeout(resolve, (2000 - animationDelay) * 2));
     resetGraph();
     iterationTime.set(0);
   }
@@ -312,11 +312,11 @@
 
     nodesSelection
       .transition()
-      .duration(animationDelay / 2)
+      .duration((2000 - animationDelay) / 2)
       .attr("fill", nodeColor);
     linksSelection
       .transition()
-      .duration(animationDelay / 2)
+      .duration((2000 - animationDelay) / 2)
       .attr("stroke", edgeColor)
       .attr("stroke-width", 2);
   }
@@ -432,8 +432,8 @@
         type="range"
         id="speed"
         min="100"
-        max="2000"
-        step="100"
+        max="1990"
+        step="10"
         bind:value={animationDelay}
       />
     
