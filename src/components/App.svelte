@@ -368,11 +368,12 @@
   your favorite topics and see how all knowledge is connected.
   <br /><br />
   <em>
-    Click a node to see the articles linked to it on the right. Selecting an
-    article from the list will add that node to the web. Use the pathfinding
-    function on the bottom left to see how each topic connects to each other.
-    The slider on the bottom right controls the speed of the pathfinding
-    animation.
+    Click a node to see the articles linked to it on the right. Clicking the 
+    green text will take you to that article, to explore on your own.
+    Selecting an article from the list will add that node to the web. Use the 
+    pathfinding function on the bottom left to see how each topic connects to 
+    each other. The slider on the bottom right controls the speed of the 
+    pathfinding animation.
   </em>
 </Modal>
 
