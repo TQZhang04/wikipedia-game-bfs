@@ -351,7 +351,12 @@
   <em>If you have knowledge, let others light their candle in it.</em><br />
   <em>-Margaret Fuller</em>
   <br /><br />
-  All knowledge builds off of decades of other knowledge. [insert example here].
+  All knowledge builds off of millenia of other knowledge. The golden ratio, 
+  originally a mathematical concept discovered in 230 BC, has been used even 
+  today in art, architecture, and design to create harmonious compositions. 
+  Star charts from the ancient Egyptians and Babylonians formed the beginnings 
+  of our knowledge of the stars, knowledge that today has taken us to faraway 
+  galaxies. What if we could see how it's all connected?
   <br /><br />
   In this interactive web app, you can explore the vast amount of knowledge contained
   within Wikipedia, building a web of knowledge connected by hyperlinks. Explore
