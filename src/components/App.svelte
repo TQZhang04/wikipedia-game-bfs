@@ -21,6 +21,7 @@
   const bfsPath = writable([]);
 
   let showModal = true;
+  let showLinkTable = writable(true);
 
   // colors
   let nodeColor = "#498a5a";
@@ -226,12 +227,16 @@
       const nodeLinks = allLinks.filter((link) => link.source === d.id);
       selectedNodeLinks.set(nodeLinks);
       selectedNode.set(d);
+      showLinkTable.set(true); // Show the link table when a node is clicked
     }
   }
 
   function handleNodeClick(nodeId) {
     if (!display.includes(nodeId)) {
       display = [...display, nodeId];
+      selectedNodeLinks.update((links) =>
+        links.filter((link) => link.target !== nodeId)
+      );
       loadGraphData().then(updateGraph);
     }
   }
@@ -362,8 +367,9 @@
 
 <svg bind:this={svg}></svg>
 
-{#if $selectedNodeLinks.length >= 0 && $selectedNode}
+{#if $showLinkTable && $selectedNodeLinks.length >= 0 && $selectedNode}
   <div class="link-table">
+    <button class="close-button" on:click={() => showLinkTable.set(false)}>x</button>
     <h3>
       <a
         href={`https://en.wikipedia.org/wiki/${$selectedNode.id}`}
@@ -420,25 +426,26 @@
         <option value={node}>{node}</option>
       {/each}
     </select>
+
+    <label for="speed">Speed:</label>
+      <input
+        type="range"
+        id="speed"
+        min="100"
+        max="2000"
+        step="100"
+        bind:value={animationDelay}
+      />
+    
+
+
     <button type="submit" class="menu-button">Find Shortest Path</button>
   </form>
 
   {#if $noPathFound}
     <p style="color: red;">No path found between the selected Wiki.</p>
   {/if}
-</div>
 
-<div class="speed-control">
-  <label for="speed">Animation Speed:</label>
-  <input
-    type="range"
-    id="speed"
-    min="100"
-    max="2000"
-    step="100"
-    bind:value={animationDelay}
-  />
-  <span>{animationDelay} ms</span>
 </div>
 
 <style>
@@ -448,28 +455,76 @@
     display: block;
   }
 
-  .link-table {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 3px;
-    margin-top: 20px;
-  }
+.link-table {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+}
 
-  .link-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.link-table {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  max-height: 70vh; /* Adjust as needed */
+  overflow-y: auto;
+}
 
-  .link-table td {
-    border: 1px solid #ccc;
-    padding: 5px;
-    text-align: left;
-    cursor: pointer;
-  }
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.link-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.link-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.link-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.link-table tr:hover {
+  background-color: #ddd;
+}
+
+.link-table td {
+  cursor: pointer;
+}
+
+.link-table a {
+  color: #225324;
+  text-decoration: none;
+}
+
+.link-table a:hover {
+  text-decoration: underline;
+}
+
 
   .bfs-form {
     position: absolute;
@@ -491,37 +546,52 @@
     margin: 5px 0;
   }
 
-  .speed-control {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 3px;
-  }
-
-  .speed-control label,
-  .speed-control input,
-  .speed-control span {
-    margin: 5px 0;
-  }
-
   .path-table {
-    position: absolute;
-    top: 30px;
-    left: 10px;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 3px;
-    margin-top: 20px;
-  }
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+}
 
-  .path-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.path-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.path-table th, .path-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.path-table th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.path-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.path-table tr:hover {
+  background-color: #ddd;
+}
+
+.path-table a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.path-table a:hover {
+  text-decoration: underline;
+}
 
   .menu-button {
     border: none;
