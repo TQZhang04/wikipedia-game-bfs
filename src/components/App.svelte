@@ -352,6 +352,23 @@
 </button>
 
 <Modal bind:showModal>
+  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction1.png' alt="instruction1" />
+</Modal>
+
+<Modal bind:showModal>
+  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction2.png' alt="instruction2" />
+</Modal>
+
+<Modal bind:showModal>
+  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction3.png' alt="instruction3" />
+</Modal>
+
+<Modal bind:showModal>
+  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' alt="instruction4" />
+</Modal>
+
+
+<Modal bind:showModal>
   <h2 slot="header">Welcome to the Wikipedia Web</h2>
   <em>If you have knowledge, let others light their candle in it.</em><br />
   <em>-Margaret Fuller</em>
@@ -376,7 +393,6 @@
     pathfinding animation.
   </em>
 </Modal>
-
 
 <svg bind:this={svg}>
   <filter id="black-glow">
