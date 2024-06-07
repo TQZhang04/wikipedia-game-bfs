@@ -352,19 +352,35 @@
 </button>
 
 <Modal bind:showModal>
-  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction1.png' alt="instruction1" />
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' 
+  alt="instruction4" 
+  style="width: 500px; height: 400px;"
+  />
 </Modal>
 
 <Modal bind:showModal>
-  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction2.png' alt="instruction2" />
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction3.png' 
+  alt="instruction3" 
+  style="width: 500px; height: 400px;"
+  />
 </Modal>
 
 <Modal bind:showModal>
-  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction3.png' alt="instruction3" />
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction2.png' 
+  alt="instruction2" 
+  style="width: 500px; height: 400px;"
+  />
 </Modal>
 
 <Modal bind:showModal>
-  <img src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' alt="instruction4" />
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction1.png'
+  alt="instruction1" 
+  style="width: 500px; height: 400px;"
+  />
 </Modal>
 
 
