@@ -19,7 +19,7 @@
     <slot />
     <hr />
     <!-- svelte-ignore a11y-autofocus -->
-    <button autofocus on:click={() => dialog.close()}>Let's begin</button>
+    <button autofocus on:click={() => dialog.close()}>Next</button>
   </div>
 </dialog>
 
