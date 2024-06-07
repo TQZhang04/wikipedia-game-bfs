@@ -352,6 +352,16 @@
 </button>
 
 <Modal bind:showModal>
+  <h2 slot="header">Press to see the wiki link</h2>
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction5.png' 
+  alt="instruction5" 
+  style="width: 500px; height: 400px;"
+  />
+</Modal>
+
+<Modal bind:showModal>
+  <h2 slot="header">Finding the shortest paths between webs</h2>
   <img 
   src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' 
   alt="instruction4" 
@@ -360,6 +370,7 @@
 </Modal>
 
 <Modal bind:showModal>
+  <h2 slot="header">Adding a new Wiki web</h2>
   <img 
   src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction3.png' 
   alt="instruction3" 
@@ -368,6 +379,7 @@
 </Modal>
 
 <Modal bind:showModal>
+  <h2 slot="header">Visiting a new Wiki web</h2>
   <img 
   src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction2.png' 
   alt="instruction2" 
@@ -376,6 +388,7 @@
 </Modal>
 
 <Modal bind:showModal>
+  <h2 slot="header">Navagative the web</h2>
   <img 
   src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction1.png'
   alt="instruction1" 
