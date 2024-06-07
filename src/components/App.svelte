@@ -3,6 +3,7 @@
   import { writable, get } from "svelte/store";
   import * as d3 from "d3";
   import Modal from "./Modal.svelte";
+  import Instruction from "./Instruction.svelte";
 
   let display = ["University of California, San Diego"];
 
@@ -352,52 +353,6 @@
 </button>
 
 <Modal bind:showModal>
-  <h2 slot="header">Press to see the wiki link</h2>
-  <img 
-  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction5.png' 
-  alt="instruction5" 
-  style="width: 500px; height: 400px;"
-  />
-</Modal>
-
-<Modal bind:showModal>
-  <h2 slot="header">Finding the shortest paths between webs</h2>
-  <img 
-  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' 
-  alt="instruction4" 
-  style="width: 500px; height: 400px;"
-  />
-</Modal>
-
-<Modal bind:showModal>
-  <h2 slot="header">Adding a new Wiki web</h2>
-  <img 
-  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction3.png' 
-  alt="instruction3" 
-  style="width: 500px; height: 400px;"
-  />
-</Modal>
-
-<Modal bind:showModal>
-  <h2 slot="header">Visiting a new Wiki web</h2>
-  <img 
-  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction2.png' 
-  alt="instruction2" 
-  style="width: 500px; height: 400px;"
-  />
-</Modal>
-
-<Modal bind:showModal>
-  <h2 slot="header">Navagative the web</h2>
-  <img 
-  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction1.png'
-  alt="instruction1" 
-  style="width: 500px; height: 400px;"
-  />
-</Modal>
-
-
-<Modal bind:showModal>
   <h2 slot="header">Welcome to the Wikipedia Web</h2>
   <em>If you have knowledge, let others light their candle in it.</em><br />
   <em>-Margaret Fuller</em>
@@ -422,6 +377,51 @@
     pathfinding animation.
   </em>
 </Modal>
+
+<Instruction bind:showModal>
+  <h2 slot="header">Press to see the wiki link</h2>
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction5.png' 
+  alt="instruction5" 
+  style="width: 500px; height: 400px;"
+  />
+</Instruction>
+
+<Instruction bind:showModal>
+  <h2 slot="header">Finding the shortest paths between webs</h2>
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' 
+  alt="instruction4" 
+  style="width: 500px; height: 400px;"
+  />
+</Instruction>
+
+<Instruction bind:showModal>
+  <h2 slot="header">Adding a new Wiki web</h2>
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction3.png' 
+  alt="instruction3" 
+  style="width: 500px; height: 400px;"
+  />
+</Instruction>
+
+<Instruction bind:showModal>
+  <h2 slot="header">Visiting a new Wiki web</h2>
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction2.png' 
+  alt="instruction2" 
+  style="width: 500px; height: 400px;"
+  />
+</Instruction>
+
+<Instruction bind:showModal>
+  <h2 slot="header">Navagative the web</h2>
+  <img 
+  src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction1.png'
+  alt="instruction1" 
+  style="width: 500px; height: 400px;"
+  />
+</Instruction>
 
 <svg bind:this={svg}>
   <filter id="black-glow">
