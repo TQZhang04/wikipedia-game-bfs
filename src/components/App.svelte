@@ -366,7 +366,7 @@
   <img 
   src='https://raw.githubusercontent.com/TQZhang04/wikipedia-game-bfs/main/static/instruction4.png' 
   alt="instruction4" 
-  style="width: 500px; height: 450px;"
+  style="width: 500px; height: 350px;"
   />
 </Modal>
 
